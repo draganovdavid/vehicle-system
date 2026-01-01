@@ -7,59 +7,29 @@ use Illuminate\Http\Request;
 
 class VehicleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $vehicles = Vehicle::latest()->get();
+        return view('vehicles.index', compact('vehicles'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'manufacturer' => 'required|string|max:255',
+            'model' => 'required|string|max:255',
+            'year' => 'required|integer',
+            'kilometers' => 'required|integer',
+        ]);
+
+        Vehicle::create($request->all());
+
+        return back();
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Vehicle $vehicle)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Vehicle $vehicle)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Vehicle $vehicle)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Vehicle $vehicle)
     {
-        //
+        $vehicle->delete();
+        return back();
     }
 }
