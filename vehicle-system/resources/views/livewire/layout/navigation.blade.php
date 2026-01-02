@@ -42,6 +42,10 @@ new class extends Component
                         🏭 Manufacturers
                     </x-nav-link>
 
+                    <x-nav-link :href="route('models.index')" :active="request()->routeIs('models.*')">
+                        🚗 Models
+                    </x-nav-link>
+
 
                 </div>
             </div>
