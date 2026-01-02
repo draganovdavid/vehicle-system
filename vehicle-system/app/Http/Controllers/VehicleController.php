@@ -3,23 +3,25 @@
 namespace App\Http\Controllers;
 
 use App\Models\Vehicle;
+use App\Models\CarModel;
 use Illuminate\Http\Request;
 
 class VehicleController extends Controller
 {
     public function index()
     {
-        $vehicles = Vehicle::latest()->get();
-        return view('vehicles.index', compact('vehicles'));
+        $vehicles = Vehicle::with('model.manufacturer')->latest()->get();
+        $models = CarModel::with('manufacturer')->get();
+
+        return view('vehicles.index', compact('vehicles', 'models'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'manufacturer' => 'required|string|max:255',
-            'model' => 'required|string|max:255',
-            'year' => 'required|integer',
-            'kilometers' => 'required|integer',
+            'car_model_id' => 'required|exists:car_models,id',
+            'year' => 'required|integer|min:1900|max:' . date('Y'),
+            'km' => 'required|integer|min:0'
         ]);
 
         Vehicle::create($request->all());

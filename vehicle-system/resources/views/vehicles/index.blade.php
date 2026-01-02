@@ -1,55 +1,64 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            🚗 Vehicle System
-        </h2>
+        Автомобили
     </x-slot>
 
-    <div class="py-6">
-        <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white shadow-sm sm:rounded-lg p-6">
+    <div class="p-6 max-w-5xl mx-auto">
 
-                <form method="POST" action="{{ route('vehicles.store') }}" class="grid grid-cols-4 gap-2 mb-4">
-                    @csrf
-                    <input name="manufacturer" placeholder="Manufacturer" class="border px-2 py-1 rounded" />
-                    <input name="model" placeholder="Model" class="border px-2 py-1 rounded" />
-                    <input name="year" placeholder="Year" class="border px-2 py-1 rounded" />
-                    <input name="kilometers" placeholder="Km" class="border px-2 py-1 rounded" />
-                    <button class="col-span-4 bg-blue-500 text-white py-2 rounded">
-                        Add Vehicle
-                    </button>
-                </form>
+        {{-- Create form --}}
+        <form method="POST" action="{{ route('vehicles.store') }}" class="grid grid-cols-4 gap-3 mb-6">
+            @csrf
 
-                <table class="w-full border">
-                    <thead>
-                        <tr class="bg-gray-100">
-                            <th class="border p-2">Manufacturer</th>
-                            <th class="border p-2">Model</th>
-                            <th class="border p-2">Year</th>
-                            <th class="border p-2">Km</th>
-                            <th class="border p-2">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($vehicles as $vehicle)
-                            <tr>
-                                <td class="border p-2">{{ $vehicle->manufacturer }}</td>
-                                <td class="border p-2">{{ $vehicle->model }}</td>
-                                <td class="border p-2">{{ $vehicle->year }}</td>
-                                <td class="border p-2">{{ $vehicle->kilometers }}</td>
-                                <td class="border p-2 text-center">
-                                    <form method="POST" action="{{ route('vehicles.destroy', $vehicle) }}">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button class="text-red-500">✖</button>
-                                    </form>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+            {{-- Model --}}
+            <select name="car_model_id" class="border p-2 rounded" required>
+                <option value="">-- choose model --</option>
 
-            </div>
-        </div>
+                @foreach($models as $m)
+                    <option value="{{ $m->id }}">
+                        {{ $m->manufacturer->name }} — {{ $m->name }}
+                    </option>
+                @endforeach
+            </select>
+
+            {{-- Year --}}
+            <input name="year" type="number" placeholder="Year"
+                   class="border p-2 rounded" required>
+
+            {{-- KM --}}
+            <input name="km" type="number" placeholder="Kilometers"
+                   class="border p-2 rounded" required>
+
+            <button class="bg-blue-600 text-white rounded px-4">
+                Add Vehicle
+            </button>
+        </form>
+
+        {{-- Table --}}
+        <table class="w-full text-left">
+            <tr class="font-bold border-b">
+                <td>Manufacturer</td>
+                <td>Model</td>
+                <td>Year</td>
+                <td>KM</td>
+                <td></td>
+            </tr>
+
+            @foreach($vehicles as $v)
+                <tr class="border-b">
+                    <td>{{ $v->model->manufacturer->name }}</td>
+                    <td>{{ $v->model->name }}</td>
+                    <td>{{ $v->year }}</td>
+                    <td>{{ $v->km }}</td>
+
+                    <td>
+                        <form method="POST" action="{{ route('vehicles.destroy', $v) }}">
+                            @csrf
+                            @method('DELETE')
+                            <button class="text-red-600">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            @endforeach
+        </table>
     </div>
 </x-app-layout>

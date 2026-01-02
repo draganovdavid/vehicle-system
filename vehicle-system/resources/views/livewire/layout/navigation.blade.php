@@ -35,7 +35,7 @@ new class extends Component
                     </x-nav-link>
                     
                     <x-nav-link :href="route('vehicles.index')" :active="request()->routeIs('vehicles.*')">
-                        🚗 {{ __('Vehicles') }}
+                        🚘 Vehicles
                     </x-nav-link>
 
                     <x-nav-link :href="route('manufacturers.index')" :active="request()->routeIs('manufacturers.*')">
