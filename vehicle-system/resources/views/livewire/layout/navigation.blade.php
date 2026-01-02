@@ -38,6 +38,11 @@ new class extends Component
                         🚗 {{ __('Vehicles') }}
                     </x-nav-link>
 
+                    <x-nav-link :href="route('manufacturers.index')" :active="request()->routeIs('manufacturers.*')">
+                        🏭 Manufacturers
+                    </x-nav-link>
+
+
                 </div>
             </div>
 
