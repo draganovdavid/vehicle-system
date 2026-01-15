@@ -10,7 +10,16 @@ class Vehicle extends Model
         'car_model_id',
         'year',
         'km',
+        'image',
     ];
+
+    /**
+     * Get full URL for image if exists.
+     */
+    public function getImageUrlAttribute(): ?string
+    {
+        return $this->image ? asset('storage/' . $this->image) : null;
+    }
 
     public function model()
     {
